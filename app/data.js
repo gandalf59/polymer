@@ -2,10 +2,11 @@ var data = {
     "desc": "Alle Waldgrundst�cke von HL",
     "maps": [
         {
+            "name": "Auf dem Kötschwergrunde",
             "gem": "Leutra",
             "fl": "8",
             "fs": "11xx",
-            "hidden": true,
+            "hidden": false,
             "mps": [
                 {
                     "lat": "50.864750",
@@ -26,6 +27,7 @@ var data = {
             ]
         },
         {
+            "name": "An der steinernen Hütte",
             "gem": "Leutra",
             "fl": "8",
             "fs": "22yy",

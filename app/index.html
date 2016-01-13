@@ -2,14 +2,16 @@
 <html language="de">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>LIS-Map</title>
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <script src="data.js"></script>
+
     <link rel="import" href="../bower_components/polymer/polymer.html">
     <link rel="import" href="../bower_components/google-map/google-map.html">
     <link rel="import" href="../bower_components/google-map/google-map-poly.html">
+    <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
     <style>
         body {
@@ -39,43 +41,52 @@
 </head>
 
 <body>
-    <style>
-        .collapse-content {
-            padding: 15px;
-            border: 1px solid #dedede;
-        }
-    </style>
-    <template id="tmpl" is="dom-bind">
-        <!-- google-map latitude="50.863" longitude="11.567" min-zoom="16" map-type="satellite" language="de" -->
-        <google-map max-zoom="15" style="width: 600px; height: 400px;" fit-to-markers>
-            <template is="dom-repeat" items="{{data.maps}}" observe="hidden">
-                <google-map-marker latitude="50.863750" longitude="11.567461" notify title="{{item.gem}}">
-                    <span><h2>tst</h2></span>
+<style>
+    .collapse-content {
+        padding: 15px;
+        border: 1px solid #dedede;
+    }
+</style>
+<template id="tmpl" is="dom-bind">
+    <!-- google-map latitude="50.863" longitude="11.567" min-zoom="16" map-type="satellite" language="de" -->
+    <!--
+    style="width: 600px; height: 400px;"
+    -->
+    <google-map min-zoom="12" max-zoom="17" fit-to-markers>
+        <template is="dom-repeat" items="{{data.maps}}" observe="hidden" notify>
+            <google-map-poly fill-color="yellow" fill-opacity=".5" closed notify hidden$="{{item.hidden}}"
+                             stroke-weight=".1">
+                <template is="dom-repeat" items="{{item.mps}}" as="itm">
+                    <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
+                </template>
+            </google-map-poly>
+        </template>
+        <template is="dom-repeat" items="{{data.maps}}">
+            <template is="dom-repeat" items="{{item.mps}}" as="itm">
+                <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}" notify title="{{item.name}}">
+                    <span><h2><b><h2></h2>lat: {{itm.lat}}</b> lon: <b>{{itm.lon}}</b></h2></span>
                 </google-map-marker>
-                <google-map-poly fill-color="yellow" closed notify hidden$="{{item.hidden}}">
-                    <template is="dom-repeat" items="{{item.mps}}" as="itm">
-                        <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
-                    </template>
-                </google-map-poly>
+                <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
             </template>
+        </template>
 
+    </google-map>
+    <div id="flbuttons">
+        <template is="dom-repeat" items="{{data.maps}}">
+            <button on-tap="toggleHidden">{{item.gem}}_{{item.fl}}_{{item.fs}}</button>
+        </template>
+    </div>
 
-        </google-map>
-        <div id="flbuttons">
-            <template is="dom-repeat" items="{{data.maps}}">
-                <button on-tap="toggle">{{item.gem}}_{{item.fl}}_{{item.fs}}</button>
-            </template>
-        </div>
-
-        <script>
-            //debugger;
-            var tmpl = document.getElementById("tmpl");
-            tmpl.data = data;
-            tmpl.toggle = function(event) {
-                event.model.item.hidden = !event.model.item.hidden;
-            }
-        </script>
-    </template>
+    <script>
+        // debugger;
+        var tmpl = document.getElementById("tmpl");
+        tmpl.toggleHidden = function (event) {
+            // debugger;
+            event.model.item.hidden = !event.model.item.hidden; //  = !event.model.item.hidden;
+        }
+        tmpl.data = data;
+    </script>
+</template>
 </body>
 
 </html>
