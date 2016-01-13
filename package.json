@@ -4,7 +4,7 @@
     "description": "bower install",
     "main": "index.js",
     "scripts": {
-        "dev": "browser-sync start --server --files \"app/**/*,dest/**/*,bower_components/**/*\" --startPath \"/app\" --directory --no-notify"
+        "dev": "browser-sync start --server --files \"app/**/*,dest/**/*,bower_components/**/*\" --startPath \"/app/index.html\" --directory --no-notify"
     },
     "repository": {
         "type": "git",
