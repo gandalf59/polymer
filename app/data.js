@@ -1,3 +1,4 @@
+
 var data = {
     "desc": "Alle Waldgrundst�cke von HL",
     "maps": [
