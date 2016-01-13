@@ -5,7 +5,7 @@ var data = {
             "gem": "Leutra",
             "fl": "8",
             "fs": "11xx",
-            "hidden": false,
+            "hidden": true,
             "mps": [
                 {
                     "lat": "50.864750",
