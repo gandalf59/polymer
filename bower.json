@@ -1,0 +1,26 @@
+{
+  "name": "polymer",
+  "authors": [
+    "dletsch <detlef.letsch@scoop-software.de>"
+  ],
+  "description": "Test Polymer",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#1.2.0",
+    "google-map": "GoogleWebComponents/google-map#~1.1.7",
+    "gulp": "~3.9.0"
+  },
+  "resolutions": {
+    "polymer": "^1.2.3"
+  }
+}

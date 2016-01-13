@@ -1,0 +1,29 @@
+<link rel="import"
+      href="bower_components/polymer/polymer.html">
+<link rel="import"
+      href="bower_components/google-map/google-map-poly.html">
+
+<dom-module id="lis-map">
+    <template>
+        <google-map fit-to-marker min-zoom="15" latitude="[[lat]]" longitude="[[lon]]" map-type="satellite" language="de">
+            <content></content>
+        </google-map>
+    </template>
+
+    <script>
+        Polymer({
+            is: "lis-map"
+            ,
+            properties: {
+                lon: {
+                    type: Number,
+                    value: 0.0,
+                },
+                lat: {
+                    type: Number,
+                    value: 0.0,
+                }
+            }
+        });
+    </script>
+</dom-module>
