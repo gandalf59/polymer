@@ -1,0 +1,25 @@
+{
+    "name": "dletsch",
+    "version": "1.0.0",
+    "description": "bower install",
+    "main": "index.js",
+    "scripts": {
+        "dev": "browser-sync start --server --files \"app/**/*,dest/**/*,bower_components/**/*\" --startPath \"/app\" --directory --no-notify"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mancereus/polymer.git"
+    },
+    "author": "dletsch",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/mancereus/polymer/issues"
+    },
+    "homepage": "https://github.com/mancereus/polymer#readme",
+    "devDependencies": {
+        "browser-sync": "^2.11.0",
+        "gulp": "^3.9.0",
+        "del": "^2.1.0",
+        "gulp-vulcanize": "^6.1.0"
+    }
+}

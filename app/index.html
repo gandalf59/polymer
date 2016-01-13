@@ -1,0 +1,140 @@
+<!doctype html>
+<html language="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>LIS-Map</title>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+    <link rel="import" href="../bower_components/google-map/google-map.html">
+    <link rel="import" href="../bower_components/google-map/google-map-poly.html">
+    <link rel="import" href="lis-map.html">
+    <link rel="import" href="lis-map-fs.html">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+        }
+
+        #controlsToggle {
+            position: absolute;
+            left: 10%;
+            bottom: 10%;
+        }
+
+        #flbuttons {
+            position: absolute;
+            left: 10%;
+            bottom: 5%;
+        }
+
+        #mapDesc {
+            position: absolute;
+            left: 50%;
+            bottom: 10%;
+            background-color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+    <style>
+        .collapse-content {
+            padding: 15px;
+            border: 1px solid #dedede;
+        }
+    </style>
+    <template id="tmpl" is="dom-bind">
+        <!-- google-map latitude="50.863" longitude="11.567" min-zoom="16" map-type="satellite" language="de" -->
+        <google-map latitude="50.863" longitude="11.567" min-zoom="16">
+
+            <google-map-poly id="fs_8_1209" fill-color="yellow" fill-opacity=".0" closed notify stroke-weight=".0">
+                <google-map-point latitude="50.863750" longitude="11.567461"></google-map-point>
+                <google-map-point latitude="50.863864" longitude="11.567531"></google-map-point>
+                <google-map-point latitude="50.863951" longitude="11.567578"></google-map-point>
+                <google-map-point latitude="50.864072" longitude="11.567731"></google-map-point>
+                <google-map-point latitude="50.864192" longitude="11.567874"></google-map-point>
+                <google-map-point latitude="50.864099" longitude="11.567965"></google-map-point>
+                <google-map-point latitude="50.863897" longitude="11.568081"></google-map-point>
+                <google-map-point latitude="50.863864" longitude="11.568232"></google-map-point>
+                <google-map-point latitude="50.863746" longitude="11.568092"></google-map-point>
+                <google-map-point latitude="50.863643" longitude="11.567964"></google-map-point>
+                <google-map-point latitude="50.863553" longitude="11.567843"></google-map-point>
+                <google-map-point latitude="50.863750" longitude="11.567461"></google-map-point>
+            </google-map-poly>
+
+            <google-map-poly id="fs_8_1130" fill-color="yellow" fill-opacity=".0" closed notify stroke-weight=".0">
+                <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+                <google-map-point latitude="50.864553" longitude="11.567843"></google-map-point>
+                <google-map-point latitude="50.863746" longitude="11.568092"></google-map-point>
+                <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+            </google-map-poly>
+
+            <!--
+    <lis-map-fs id="fs_8_1209">
+        <google-map-point latitude="50.863750" longitude="11.567461"></google-map-point>
+        <google-map-point latitude="50.863864" longitude="11.567531"></google-map-point>
+        <google-map-point latitude="50.863951" longitude="11.567578"></google-map-point>
+        <google-map-point latitude="50.864072" longitude="11.567731"></google-map-point>
+        <google-map-point latitude="50.864192" longitude="11.567874"></google-map-point>
+        <google-map-point latitude="50.864099" longitude="11.567965"></google-map-point>
+        <google-map-point latitude="50.863897" longitude="11.568081"></google-map-point>
+        <google-map-point latitude="50.863864" longitude="11.568232"></google-map-point>
+        <google-map-point latitude="50.863746" longitude="11.568092"></google-map-point>
+        <google-map-point latitude="50.863643" longitude="11.567964"></google-map-point>
+        <google-map-point latitude="50.863553" longitude="11.567843"></google-map-point>
+        <google-map-point latitude="50.863750" longitude="11.567461"></google-map-point>
+    </lis-map-fs>
+
+    <lis-map-fs id="fs_8_1130">
+        <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+        <google-map-point latitude="50.864553" longitude="11.567843"></google-map-point>
+        <google-map-point latitude="50.863746" longitude="11.568092"></google-map-point>
+        <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+    </lis-map-fs>
+    -->
+
+            <!-- google-map-poly id="fs_8_1130" fill-color="yellow" fill-opacity=".0" closed notify stroke-weight=".0" >
+        <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+        <google-map-point latitude="50.864553" longitude="11.567843"></google-map-point>
+        <google-map-point latitude="50.863746" longitude="11.568092"></google-map-point>
+        <google-map-point latitude="50.864750" longitude="11.567461"></google-map-point>
+    </google-map-poly -->
+
+            <google-map-marker latitude="50.863750" longitude="11.567461" notify title="Im Kötschwergrunde"><span><h2>Leutra_8_1209</h2>lat: <b>50.863750</b> lon: <b>11.567461</b></span>
+            </google-map-marker>
+
+
+        </google-map>
+
+        <button id="controlsToggle" onclick="toggleControls()">Toggle controls</button>
+
+        <div id="flbuttons">
+            <button id="bt_all" onclick="togglePoly('fs_all')">Alle Flurstücke</button>
+            <button id="bt_8_1130" onclick="togglePoly('fs_8_1130')">8_1130</button>
+            <button id="bt_8_1209" onclick="togglePoly('fs_8_1209')">8_1209</button>
+        </div>
+
+        <div id="mapDesc">
+            <h2>Flurstücke HL</h2>
+        </div>
+        <script>
+            var gmap = document.querySelector('google-map');
+    gmap.addEventListener('api-load', function (e) {
+        document.querySelector('google-map-poly').map = this.map;
+    });
+
+    function toggleControls() {
+        gmap.disableDefaultUi = !gmap.disableDefaultUi;
+    }
+    function togglePoly(id) {
+        var e = document.getElementById(id);
+        e.fillOpacity = (e.fillOpacity == 0.5 ? 0.0 : 0.5 );
+    }
+        </script>
+    </template>
+</body>
+
+</html>
