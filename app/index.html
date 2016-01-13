@@ -46,10 +46,9 @@
         }
     </style>
     <template id="tmpl" is="dom-bind">
-        <fl-data data="{{data}}"></fl-data>
         <!-- google-map latitude="50.863" longitude="11.567" min-zoom="16" map-type="satellite" language="de" -->
         <google-map max-zoom="15" style="width: 600px; height: 400px;" fit-to-markers>
-            <template is="dom-repeat" items="{{data.maps}}">
+            <template is="dom-repeat" items="{{data.maps}}" observe="hidden">
                 <google-map-marker latitude="50.863750" longitude="11.567461" notify title="{{item.gem}}">
                     <span><h2>tst</h2></span>
                 </google-map-marker>
@@ -62,26 +61,21 @@
 
 
         </google-map>
-
-        <button id="controlsToggle" onclick="toggleControls()">Toggle controls</button>
-
         <div id="flbuttons">
-            <button id="bt_all" onclick="togglePoly('fs_all')">Alle Flurstücke</button>
-            <button id="bt_8_1130" onclick="togglePoly('fs_8_1130')">8_1130</button>
-            <button id="bt_8_1209" onclick="togglePoly('fs_8_1209')">8_1209</button>
+            <template is="dom-repeat" items="{{data.maps}}">
+                <button on-tap="toggle">{{item.gem}}_{{item.fl}}_{{item.fs}}</button>
+            </template>
         </div>
 
-        <div id="mapDesc">
-            <h2>Flurstücke HL</h2>
-        </div>
         <script>
             //debugger;
             var tmpl = document.getElementById("tmpl");
             tmpl.data = data;
-            var gmap = document.querySelector('google-map');
+            tmpl.toggle = function(event) {
+                event.model.item.hidden = !event.model.item.hidden;
+            }
         </script>
-
-        </dom-module>
+    </template>
 </body>
 
 </html>
