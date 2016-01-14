@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="lis-map-data">
+    <template>
+        <iron-ajax id="topodata" auto url="{{url}}" handle-as="json" last-response="{{data}}" handle-reponse="handleResponse"></iron-ajax>
+    </template>
+
+    <script>
+
+        Polymer({
+            is: "lis-map-data",
+            properties: {
+                data: Object,
+                url: String
+            },
+            handleResponse: function(resp,err) {
+                data = resp;
+            }
+        });
+        /*
+         var LisMapData = document.registerElement('lis-map-data');
+         document.body.appendChild(new LisMapData());
+         */
+    </script>
+</dom-module>
+

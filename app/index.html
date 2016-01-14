@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>LIS-Map</title>
     <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <!-- script src="data_raw.js"></script -->
-    <script src="data.js"></script>
 
     <link rel="import" href="../bower_components/polymer/polymer.html">
     <link rel="import" href="../bower_components/google-map/google-map.html">
     <link rel="import" href="../bower_components/google-map/google-map-poly.html">
     <link rel="import" href="../bower_components/paper-button/paper-button.html">
+    <!-- link rel="import" href="../bower_components/iron-ajax/iron-ajax.html" -->
+    <link rel="import" href="../app/lis-map-data.html">
+    <!-- script src="data.js"></script -->
 
     <style>
         body {
@@ -34,18 +35,22 @@
 
         #mapDesc {
             position: absolute;
-            left: 50%;
+            left: 10%;
             bottom: 10%;
-            background-color: aqua;
+            background-color: #71ff60;
         }
     </style>
 </head>
 
 <body>
 
-<template id="tmpl" is="dom-bind">
+<template id="tmpl">
+    <lis-map-data
+               url="../data/hl.json"
+               data="{{datax}}" >
+    </lis-map-data>
     <google-map min-zoom="12" max-zoom="17" fit-to-markers>
-        <template is="dom-repeat" items="{{data.maps}}" observe="hidden" notify>
+        <template is="dom-repeat" items="{{datax.maps}}" observe="hidden" notify>
             <google-map-poly id="{{item.fs}}" fill-color="yellow" fill-opacity=".5" closed notify
                              hidden$="{{item.hidden}}"
                              stroke-weight=".0">
@@ -54,7 +59,7 @@
                 </template>
             </google-map-poly>
         </template>
-        <template is="dom-repeat" items="{{data.maps}}">
+        <template is="dom-repeat" items="{{datax.maps}}">
             <template is="dom-repeat" items="{{item.mps}}" as="itm">
                 <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}" notify click-events title="{{item.name}}">
                     <span><h2>{{item.name}}</h2>lat:<b>{{itm.lat}}</b> lon:<b>{{itm.lon}}</b></span>
@@ -65,9 +70,14 @@
 
     </google-map>
     <div id="flbuttons">
-        <template is="dom-repeat" items="{{data.maps}}">
-            <button id="{{item.fs}}" on-tap="toggleHidden">{{item.gem}}_{{item.fl}}_{{item.fs}}</button>
+        <template is="dom-repeat" items="{{datax.maps}}">
+            <button id="{{item.fs}}" on-tap="toggleHidden">{{item.name}}</button>
+            <!--{{item.gem}}_{{item.fl}}_{{item.fs}}-->
+
         </template>
+    </div>
+    <div id="mapDesc">
+        <h2>{{datax.desc}}</h2>
     </div>
 
     <script>
@@ -76,6 +86,7 @@
             var el = document.getElementById(event.target.id);
             // el.hidden = !el.hidden;
             el.fillOpacity = ( el.fillOpacity === 0.0 ? 0.5 : 0.0 );
+
         }
 /*
         data.forEach(function (fs) {
@@ -96,7 +107,8 @@
             fs.mps = ret;
         })
 */
-        tmpl.data = data;
+        tmpl.datax = [];
+        tmpl.url = "../data/hl.json";
 
     </script>
 </template>
