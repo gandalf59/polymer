@@ -1,28 +1,126 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
+<!--
+-->
 
 <dom-module id="lis-map-data">
-    <template>
-        <iron-ajax id="topodata" auto url="{{url}}" handle-as="json" last-response="{{data}}" handle-reponse="handleResponse"></iron-ajax>
+    <template id="tmpl">
+        <iron-ajax auto
+                   handle-as="json"
+                   url="[[url]]"
+                   last-reponse="{{jdata}}"
+                   on-response="handleResponse"
+                   on-error="handleError"
+                >
+        </iron-ajax>
+        <google-map min-zoom="12" max-zoom="20" fit-to-markers>
+            <template is="dom-repeat" items="{{jdata.maps}}" notify>
+                <google-map-poly id="{{item.fs}}" fill-color="yellow" fill-opacity=".5" closed notify
+                                 stroke-weight=".0">
+                    <template is="dom-repeat" items="{{item.mps}}" as="itm">
+                        <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
+                    </template>
+                </google-map-poly>
+            </template>
+            <template is="dom-repeat" items="{{jdata.maps}}">
+                <template is="dom-repeat" items="{{item.mps}}" as="itm">
+                    <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}" notify click-events
+                                       title="{{item.name}}">
+                        <span><h2>{{item.name}}</h2>lat:<b>{{itm.lat}}</b> lon:<b>{{itm.lon}}</b></span>
+                    </google-map-marker>
+                    <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
+                </template>
+            </template>
+            <div id="lisMapButtons">
+                <template is="dom-repeat" items="{{jdata.maps}}">
+                    <button id="{{item.fs}}" on-tap="toggleHidden">{{item.name}}</button>
+                    <!--{{item.gem}}_{{item.fl}}_{{item.fs}}-->
+
+                </template>
+            </div>
+            <div id="lisMapDesc">
+                <h2>{{jdata.desc}}</h2>
+            </div>
+        </google-map>
+
+        <content></content>
     </template>
 
-    <script>
 
+    <script>
         Polymer({
             is: "lis-map-data",
-            properties: {
-                data: Object,
-                url: String
+            url: {
+                type: String,
+                value: "dummy",
+                notify: true,
+                reflectToAttribute: true
             },
-            handleResponse: function(resp,err) {
-                data = resp;
+            jdata: {
+                type: Object,
+                value: {desc: "n.a."},
+                notify: true,
+                reflectToAttribute: true,
+                observer: 'handleChange'
+            },
+
+            properties: {},
+            computeMPS: function (map) {
+
+                var mps = [];
+                var lls = map.latlon.split(/,\s*/);
+                var len = lls.length;
+                for (var i = 0; i < len; i++) {
+                    if ((lls[i] == null) || lls[i] === "") {
+                        break;
+                    }
+                    var ll = lls[i].split(/ /);
+                    var mp = {lat: "", lon: ""};
+                    mp.lat = ll[1];
+                    mp.lon = ll[0];
+                    mps.push(mp);
+                }
+
+                return mps;
+            },
+            computeData: function (jdata) {
+                var lenMap = jdata.maps.length;
+                for (var i = 0; i < lenMap; i++) {
+                    if (jdata.maps[i].mps == null) {
+                        jdata.maps[i].mps = this.computeMPS(jdata.maps[i]);
+                    }
+                }
+                return jdata;
+            },
+
+            toggleHidden: function (event) {
+                var el = document.getElementById(event.target.id);
+                el.fillOpacity = ( el.fillOpacity === 0.0 ? 0.5 : 0.0 );
             }
-        });
-        /*
-         var LisMapData = document.registerElement('lis-map-data');
-         document.body.appendChild(new LisMapData());
-         */
+            ,
+            ready: function () {
+                console.log("class loaded");
+            }
+            ,
+            handleResponse: function (event) {
+                if (event.detail.response != null) {
+                    console.log("json response loaded: " + event.detail.response.desc);
+                    this.jdata = this.computeData(event.detail.response);
+                } else {
+                    alert("null data received for " + this.url + ". Please check your data file: " + this.url);
+                    console.log("null data received for " + this.url);
+                }
+
+            }
+            ,
+            handleError: function (event) {
+                console.log("json load error: " + event.error);
+                alert("json: " + event.error);
+            }
+        })
+        ;
+
     </script>
 </dom-module>
 
