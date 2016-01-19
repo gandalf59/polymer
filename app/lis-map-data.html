@@ -4,7 +4,7 @@
 <!--
 -->
 
-<dom-module id="lis-map-data">
+<dom-module is="lis-map-data">
     <template id="tmpl">
         <iron-ajax auto
                    handle-as="json"
@@ -12,9 +12,9 @@
                    last-reponse="{{jdata}}"
                    on-response="handleResponse"
                    on-error="handleError"
-                >
+        >
         </iron-ajax>
-        <google-map min-zoom="12" max-zoom="20" fit-to-markers map-type="hybrid">
+        <google-map min-zoom="12" max-zoom="20" map-type="hybrid" fit-to-markers>
             <template is="dom-repeat" items="{{jdata.maps}}" notify>
                 <google-map-marker latitude="{{item.mps.0.lat}}" longitude="{{item.mps.0.lon}}"
                                    title="{{item.fl}}_{{item.fs}}_{{item.name}}">{{item.fs}}
@@ -30,15 +30,16 @@
             <template is="dom-repeat" items="{{jdata.maps}}">
                 <template is="dom-repeat" items="{{item.mps}}" as="itm">
                     <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}"
-                                       title="{{item.fs}}_{{item.name}}" hidden="{{markersHidden}}">
-                        <span><h2>{{item.name}}</h2>lat:<b>{{itm.lat}}</b> lon:<b>{{itm.lon}}</b></span>
+                                       title="{{item.fs}}_{{item.name}}"><span><h2>{{item.name}}</h2>lat:<b>{{itm.lat}}</b> lon:<b>{{itm.lon}}</b></span>
                     </google-map-marker>
                 </template>
             </template>
             <div id="lisMapButtons">
-                <button on-tap="toggleMarker">Grenzsteine</button>
+                <button style="background-color: #37ffc4" class="toggle-button" id="lisMarker" on-tap="toggleMarkers">
+                    Grenzsteine
+                </button>
                 <template is="dom-repeat" items="{{jdata.maps}}">
-                    <button id="{{item.fs}}" on-tap="toggleHidden">{{item.name}}</button>
+                    <button class="toggle-button" id="{{item.fs}}" on-tap="toggleHidden">{{item.name}}</button>
                     <!--{{item.gem}}_{{item.fl}}_{{item.fs}}-->
 
                 </template>
@@ -53,6 +54,7 @@
     <style>
 
         .lisMapMarker {
+            visibility: hidden;
             display: none;
         }
 
@@ -60,7 +62,6 @@
             position: absolute;
             left: 10%;
             bottom: 5%;
-            background-color: #71ff60;
         }
 
         #lisMapDesc {
@@ -69,6 +70,12 @@
             bottom: 10%;
             background-color: #71ff60;
         }
+
+        .lisMarker {
+            display: none;
+            icon: "";
+        }
+
     </style>
 
 
@@ -88,15 +95,11 @@
                 reflectToAttribute: true,
                 observer: 'handleChange'
             },
-            markAsHidden:
-            {
-                type: Object,
-                value: false,
-                notify: true,
-                reflectToAttribute: true
-            },
-
             properties: {
+                markersHidden: {
+                    type: Boolean,
+                    value: false
+                }
             },
             computeMPS: function (map) {
 
@@ -128,12 +131,25 @@
 
             toggleHidden: function (event) {
                 var el = document.getElementById(event.target.id);
+
+                if (el.fillOpacity === 0.0) {
+                    event.target.style.backgroundColor = 'yellow';
+                    el.fillOpacity = 0.5;
+                } else {
+                    event.target.style.backgroundColor = 'white';
+                    el.fillOpacity = 0.0;
+                }
+            },
+            toggleMarkers: function (event) {
+                alert("markers are " + (this.markersHidden ? "hidden" : "not hidden"));
+                this.markersHidden = !this.markersHidden;
+            },
+
+            showFS: function (event) {
+                alert(event.target.id)
                 el.fillOpacity = ( el.fillOpacity === 0.0 ? 0.5 : 0.0 );
             },
-            toggleMarker: function (event) {
-                this.markersHidden = !this.markersHidden;
-            }
-            ,
+
             ready: function () {
                 console.log("class loaded");
             }
