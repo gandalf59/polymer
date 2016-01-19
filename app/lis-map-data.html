@@ -14,10 +14,14 @@
                    on-error="handleError"
                 >
         </iron-ajax>
-        <google-map min-zoom="12" max-zoom="20" fit-to-markers>
+        <google-map min-zoom="12" max-zoom="20" fit-to-markers map-type="hybrid">
             <template is="dom-repeat" items="{{jdata.maps}}" notify>
-                <google-map-poly id="{{item.fs}}" fill-color="yellow" fill-opacity=".5" closed notify
-                                 stroke-weight=".0">
+                <google-map-marker latitude="{{item.mps.0.lat}}" longitude="{{item.mps.0.lon}}"
+                                   title="{{item.fl}}_{{item.fs}}_{{item.name}}">{{item.fs}}
+                    <span><h2>{{item.name}}</h2>lat:<b>{{item.mps.0.lat}}</b> lon:<b>{{item.mps.0.lon}}</b></span>
+                </google-map-marker>
+                <google-map-poly id="{{item.fs}}" fill-color="yellow" fill-opacity=".0" closed notify
+                                 stroke-weight=".0" on-click="toggleHidden">
                     <template is="dom-repeat" items="{{item.mps}}" as="itm">
                         <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
                     </template>
@@ -25,14 +29,14 @@
             </template>
             <template is="dom-repeat" items="{{jdata.maps}}">
                 <template is="dom-repeat" items="{{item.mps}}" as="itm">
-                    <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}" notify click-events
-                                       title="{{item.name}}">
+                    <google-map-marker latitude="{{itm.lat}}" longitude="{{itm.lon}}"
+                                       title="{{item.fs}}_{{item.name}}" hidden="{{markersHidden}}">
                         <span><h2>{{item.name}}</h2>lat:<b>{{itm.lat}}</b> lon:<b>{{itm.lon}}</b></span>
                     </google-map-marker>
-                    <google-map-point latitude="{{itm.lat}}" longitude="{{itm.lon}}"></google-map-point>
                 </template>
             </template>
             <div id="lisMapButtons">
+                <button on-tap="toggleMarker">Grenzsteine</button>
                 <template is="dom-repeat" items="{{jdata.maps}}">
                     <button id="{{item.fs}}" on-tap="toggleHidden">{{item.name}}</button>
                     <!--{{item.gem}}_{{item.fl}}_{{item.fs}}-->
@@ -46,6 +50,26 @@
 
         <content></content>
     </template>
+    <style>
+
+        .lisMapMarker {
+            display: none;
+        }
+
+        #lisMapButtons {
+            position: absolute;
+            left: 10%;
+            bottom: 5%;
+            background-color: #71ff60;
+        }
+
+        #lisMapDesc {
+            position: absolute;
+            left: 10%;
+            bottom: 10%;
+            background-color: #71ff60;
+        }
+    </style>
 
 
     <script>
@@ -64,8 +88,16 @@
                 reflectToAttribute: true,
                 observer: 'handleChange'
             },
+            markAsHidden:
+            {
+                type: Object,
+                value: false,
+                notify: true,
+                reflectToAttribute: true
+            },
 
-            properties: {},
+            properties: {
+            },
             computeMPS: function (map) {
 
                 var mps = [];
@@ -97,6 +129,9 @@
             toggleHidden: function (event) {
                 var el = document.getElementById(event.target.id);
                 el.fillOpacity = ( el.fillOpacity === 0.0 ? 0.5 : 0.0 );
+            },
+            toggleMarker: function (event) {
+                this.markersHidden = !this.markersHidden;
             }
             ,
             ready: function () {
