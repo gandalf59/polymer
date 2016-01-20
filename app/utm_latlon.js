@@ -1,112 +1,59 @@
+function utmToLatLng(zone, easting, northing, northernHemisphere){
+    if (!northernHemisphere){
+        northing = 10000000 - northing;
+    }
+
+    var a = 6378137;
+    var e = 0.081819191;
+    var e1sq = 0.006739497;
+    var k0 = 0.9996;
+
+    var arc = northing / k0;
+    var mu = arc / (a * (1 - Math.pow(e, 2) / 4.0 - 3 * Math.pow(e, 4) / 64.0 - 5 * Math.pow(e, 6) / 256.0));
+
+    var ei = (1 - Math.pow((1 - e * e), (1 / 2.0))) / (1 + Math.pow((1 - e * e), (1 / 2.0)));
+
+    var ca = 3 * ei / 2 - 27 * Math.pow(ei, 3) / 32.0;
+
+    var cb = 21 * Math.pow(ei, 2) / 16 - 55 * Math.pow(ei, 4) / 32;
+    var cc = 151 * Math.pow(ei, 3) / 96;
+    var cd = 1097 * Math.pow(ei, 4) / 512;
+    var phi1 = mu + ca * Math.sin(2 * mu) + cb * Math.sin(4 * mu) + cc * Math.sin(6 * mu) + cd * Math.sin(8 * mu);
+
+    var n0 = a / Math.pow((1 - Math.pow((e * Math.sin(phi1)), 2)), (1 / 2.0));
+
+    var r0 = a * (1 - e * e) / Math.pow((1 - Math.pow((e * Math.sin(phi1)), 2)), (3 / 2.0));
+    var fact1 = n0 * Math.tan(phi1) / r0;
+
+    var _a1 = 500000 - easting;
+    var dd0 = _a1 / (n0 * k0);
+    var fact2 = dd0 * dd0 / 2;
+
+    var t0 = Math.pow(Math.tan(phi1), 2);
+    var Q0 = e1sq * Math.pow(Math.cos(phi1), 2);
+    var fact3 = (5 + 3 * t0 + 10 * Q0 - 4 * Q0 * Q0 - 9 * e1sq) * Math.pow(dd0, 4) / 24;
+
+    var fact4 = (61 + 90 * t0 + 298 * Q0 + 45 * t0 * t0 - 252 * e1sq - 3 * Q0 * Q0) * Math.pow(dd0, 6) / 720;
+
+    var lof1 = _a1 / (n0 * k0);
+    var lof2 = (1 + 2 * t0 + Q0) * Math.pow(dd0, 3) / 6.0;
+    var lof3 = (5 - 2 * Q0 + 28 * t0 - 3 * Math.pow(Q0, 2) + 8 * e1sq + 24 * Math.pow(t0, 2)) * Math.pow(dd0, 5) / 120;
+    var _a2 = (lof1 - lof2 + lof3) / Math.cos(phi1);
+    var _a3 = _a2 * 180 / Math.PI;
+
+    var latitude = 180 * (phi1 - fact1 * (fact2 + fact3 + fact4)) / Math.PI;
+
+    if (!northernHemisphere){
+        latitude = -latitude;
+    }
+
+    var longitude = ((zone > 0) && (6 * zone - 183.0) || 3.0) - _a3;
+
+    var obj = {
+        lat : latitude,
+        lon: longitude
+    };
 
 
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// ToLL - function to compute Latitude and Longitude given UTM Northing and Easting in meters
-//
-//  Description:
-//    This member function converts input north and east coordinates
-//    to the corresponding Northing and Easting values relative to the defined
-//    UTM zone.  Refer to the reference in this file's header.
-//
-//  Parameters:
-//    north   - (i) Northing (meters)
-//    east    - (i) Easting (meters)
-//    utmZone - (i) UTM Zone of the North and East parameters
-//    lat     - (o) Latitude in degrees
-//    lon     - (o) Longitude in degrees
-//
-function ToLL(north,east,utmZone)
-{
-    // This is the lambda knot value in the reference
-    var LngOrigin = DegToRad(utmZone * 6 - 183)
-
-    // The following set of class constants define characteristics of the
-    // ellipsoid, as defined my the WGS84 datum.  These values need to be
-    // changed if a different dataum is used.
-
-    var FalseNorth = 0.  // South or North?
-    //if (lat < 0.) FalseNorth = 10000000.  // South or North?
-    //else          FalseNorth = 0.
-
-    var Ecc = 0.081819190842622       // Eccentricity
-    var EccSq = Ecc * Ecc
-    var Ecc2Sq = EccSq / (1. - EccSq)
-    var Ecc2 = Math.sqrt(Ecc2Sq)      // Secondary eccentricity
-    var E1 = ( 1 - Math.sqrt(1-EccSq) ) / ( 1 + Math.sqrt(1-EccSq) )
-    var E12 = E1 * E1
-    var E13 = E12 * E1
-    var E14 = E13 * E1
-
-    var SemiMajor = 6378137.0         // Ellipsoidal semi-major axis (Meters)
-    var FalseEast = 500000.0          // UTM East bias (Meters)
-    var ScaleFactor = 0.9996          // Scale at natural origin
-
-    // Calculate the Cassini projection parameters
-
-    var M1 = (north - FalseNorth) / ScaleFactor
-    var Mu1 = M1 / ( SemiMajor * (1 - EccSq/4.0 - 3.0*EccSq*EccSq/64.0 -
-        5.0*EccSq*EccSq*EccSq/256.0) )
-
-    var Phi1 = Mu1 + (3.0*E1/2.0 - 27.0*E13/32.0) * Math.sin(2.0*Mu1)
-        + (21.0*E12/16.0 - 55.0*E14/32.0)           * Math.sin(4.0*Mu1)
-        + (151.0*E13/96.0)                          * Math.sin(6.0*Mu1)
-        + (1097.0*E14/512.0)                        * Math.sin(8.0*Mu1)
-
-    var sin2phi1 = Math.sin(Phi1) * Math.sin(Phi1)
-    var Rho1 = (SemiMajor * (1.0-EccSq) ) / Math.pow(1.0-EccSq*sin2phi1,1.5)
-    var Nu1 = SemiMajor / Math.sqrt(1.0-EccSq*sin2phi1)
-
-    // Compute parameters as defined in the POSC specification.  T, C and D
-
-    var T1 = Math.tan(Phi1) * Math.tan(Phi1)
-    var T12 = T1 * T1
-    var C1 = Ecc2Sq * Math.cos(Phi1) * Math.cos(Phi1)
-    var C12 = C1 * C1
-    var D  = (east - FalseEast) / (ScaleFactor * Nu1)
-    var D2 = D * D
-    var D3 = D2 * D
-    var D4 = D3 * D
-    var D5 = D4 * D
-    var D6 = D5 * D
-
-    // Compute the Latitude and Longitude and convert to degrees
-    var lat = Phi1 - Nu1*Math.tan(Phi1)/Rho1 *
-        ( D2/2.0 - (5.0 + 3.0*T1 + 10.0*C1 - 4.0*C12 - 9.0*Ecc2Sq)*D4/24.0
-        + (61.0 + 90.0*T1 + 298.0*C1 + 45.0*T12 - 252.0*Ecc2Sq - 3.0*C12)*D6/720.0 )
-
-    lat = RadToDeg(lat)
-
-    var lon = LngOrigin +
-        ( D - (1.0 + 2.0*T1 + C1)*D3/6.0
-        + (5.0 - 2.0*C1 + 28.0*T1 - 3.0*C12 + 8.0*Ecc2Sq + 24.0*T12)*D5/120.0) / Math.cos(Phi1)
-
-    lon = RadToDeg(lon)
-
-    // Create a object to store the calculated Latitude and Longitude values
-    var sendLatLon = new PC_LatLon(lat,lon)
-
-    // Returns a PC_LatLon object
-    return sendLatLon
+    return obj;
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-//  RadToDeg - function that inputs a value in radians and returns a value in degrees
-//
-function RadToDeg(value)
-{
-    return ( value * 180.0 / Math.PI )
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-//
-// PC_LatLon - this psuedo class is used to store lat/lon values computed by the ToLL
-//  function.
-//
-function PC_LatLon(inLat,inLon)
-{
-    this.lat       = inLat     // Store Latitude in decimal degrees
-    this.lon       = inLon     // Store Longitude in decimal degrees
-}
-
