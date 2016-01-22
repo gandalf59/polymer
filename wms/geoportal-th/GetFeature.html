@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <title>GetFeature GeoProxy-TH</title>
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <link rel="import" href="../../bower_components/polymer/polymer.html">
+    <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+</head>
+<body>
+<h1>GetFeature GeoProxy-TH</h1>
+<h2>Request</h2>
+<template id="tmpl">
+    <iron-ajax auto
+               handle-as="json"
+               url="{{url}}"
+               on-response="handleResponse"
+               on-error="handleError"
+    >
+    </iron-ajax>
+</template>
+<h2>Result</h2>
+
+
+</body>
+<script>
+    Polymer({
+        handleResponse: function (response) {
+            alert("Response received")
+        },
+        handleError: function (response) {
+            alert("Error received")
+        },
+        url: `http://www.geoproxy.geoportal-th.de/geoproxy/services?
+    SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature
+    &TYPENAME=
+            tlvermgeo:GAZHKO_HNR
+    &NAMESPACE=xmlns%28tlvermgeo=http://www.geoproxy.geoportal-th.de/tlvermgeo%29
+    &FILTER=<ogc:Filter xmlns:wfs="http://www.opengis.net/wfs"
+    xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc"
+    xmlns:tlvermgeo="http://www.geoproxy.geoportal-th.de/tlvermgeo"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.opengis.net/wfs
+    http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+            <ogc:And><ogc:PropertyIsEqualTo>
+    <ogc:PropertyName>
+    tlvermgeo:strkscomid
+    </ogc:PropertyName>
+    <ogc:Literal>
+    7105301043
+    </ogc:Literal></ogc:PropertyIsEqualTo>
+    <ogc:PropertyIsEqualTo>
+    <ogc:PropertyName>
+    tlvermgeo:hausnr
+    </ogc:PropertyName>
+    <ogc:Literal>
+    3
+    </ogc:Literal>
+    </ogc:PropertyIsEqualTo></ogc:And>
+    </ogc:Filter>`
+
+    });
+
+    /*
+     http://www.geoportal-th.de/Gazetteer/CompletingList.asmx/GetFeatureItems?searchterm=163074008&sid=2&featureclass=tlvermgeo:gaz_alk_flst&lcid=1031&timeOut=20
+     */
+</script>
+</html>

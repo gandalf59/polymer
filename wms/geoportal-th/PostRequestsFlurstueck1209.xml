@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flurstueck id="Leutra_8_1209" name="_An derSteinern Hütte">
+    <Request id="Leutra">
+        <?xml version="1.0" encoding="UTF-8"?>
+        <wfs:GetFeature version="1.1.0"
+                        xmlns:wfs="http://www.opengis.net/wfs"
+                        xmlns:gml="http://www.opengis.net/gml"
+                        xmlns:ogc="http://www.opengis.net/ogc"
+                        xmlns:tlvermgeo="http://www.geoproxy.geoportal-th.de/tlvermgeo"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://www.opengis.net/wfs  http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+        >
+            <wfs:Query typeName="tlvermgeo:gaz_alk_gem">
+                <ogc:Filter>
+                    <ogc:And>
+
+                        <!-- Vorerst nur Such im Katasterbereich Pößneck: geographicIdentifier=55. Kann später auch noch dynamisch ermittelt werden -->
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tlvermgeo:parentIdentifier</ogc:PropertyName>
+                            <ogc:Literal>55</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+
+                        <ogc:PropertyIsLike wildCard="%" singleChar="?" escape="/">
+                            <ogc:PropertyName>tlvermgeo:geographicName</ogc:PropertyName>
+                            <ogc:Literal>Leutra%</ogc:Literal>
+                        </ogc:PropertyIsLike>
+
+                    </ogc:And>
+                </ogc:Filter>
+            </wfs:Query>
+        </wfs:GetFeature>
+
+    </Request>
+    <Respone>
+        <wfs:FeatureCollection
+                xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.geoproxy.geoportal-th.de/tlvermgeo http://www.geoproxy.geoportal-th.de/geoproxy/services?SERVICE=WFS&VERSION=1.1.0&REQUEST=DescribeFeatureType&OUTPUTFORMAT=text%2Fxml%3B+subtype%3Dgml%2F3.1.1&TYPENAME=tlvermgeo:gaz_alk_gem&NAMESPACE=xmlns(tlvermgeo=http%3A%2F%2Fwww.geoproxy.geoportal-th.de%2Ftlvermgeo)"
+                timeStamp="2016-01-21T12:07:47Z" numberOfFeatures="1">
+            <gml:boundedBy>
+                <gml:Envelope srsName="EPSG:25832">
+                    <gml:lowerCorner>677739.997 5636971.642</gml:lowerCorner>
+                    <gml:upperCorner>682144.905 5639083.881</gml:upperCorner>
+                </gml:Envelope>
+            </gml:boundedBy>
+            <gml:featureMember>
+                <tlvermgeo:gaz_alk_gem gml:id="ID_TLVERMGEO_GAZ_ALK_GEM.3074">
+                    <tlvermgeo:geographicIdentifier>3074</tlvermgeo:geographicIdentifier>
+                    <tlvermgeo:geographicName>Leutra (3074)</tlvermgeo:geographicName>
+                    <tlvermgeo:parentIdentifier>55</tlvermgeo:parentIdentifier>
+                    <tlvermgeo:geographicExtent><!--Inlined geometry 'ID_TLVERMGEO_GAZ_ALK_GEM.3074_TLVERMGEO_GEOGRAPHICEXTENT'
+-->
+                        <gml:Polygon gml:id="ID_TLVERMGEO_GAZ_ALK_GEM.3074_TLVERMGEO_GEOGRAPHICEXTENT"
+                                     srsName="EPSG:25832">
+                            <gml:exterior>
+                                <gml:LinearRing srsName="EPSG:25832">
+                                    <gml:posList>677818.686 5636971.642 677739.997 5638908.058 682066.213 5639083.881
+                                        682144.905 5637147.421 677818.686 5636971.642
+                                    </gml:posList>
+                                </gml:LinearRing>
+                            </gml:exterior>
+                        </gml:Polygon>
+                    </tlvermgeo:geographicExtent>
+                </tlvermgeo:gaz_alk_gem>
+            </gml:featureMember>
+        </wfs:FeatureCollection>
+    </Respone>
+    <Request id="Leutra_8">
+        <wfs:GetFeature version="1.1.0"
+                        xmlns:wfs="http://www.opengis.net/wfs"
+                        xmlns:gml="http://www.opengis.net/gml"
+                        xmlns:ogc="http://www.opengis.net/ogc"
+                        xmlns:tlvermgeo="http://www.geoproxy.geoportal-th.de/tlvermgeo"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://www.opengis.net/wfs  http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+        >
+            <wfs:Query typeName="tlvermgeo:gaz_alk_flur">
+                <ogc:Filter>
+                    <ogc:And>
+
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tlvermgeo:parentIdentifier</ogc:PropertyName>
+                            <ogc:Literal>3074</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+
+                        <ogc:PropertyIsLike wildCard="%" singleChar="?" escape="/">
+                            <ogc:PropertyName>tlvermgeo:geographicName</ogc:PropertyName>
+                            <ogc:Literal>8</ogc:Literal>
+                        </ogc:PropertyIsLike>
+
+                    </ogc:And>
+                </ogc:Filter>
+            </wfs:Query>
+        </wfs:GetFeature>
+    </Request>
+    <Respone>
+        <wfs:FeatureCollection
+                xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.geoproxy.geoportal-th.de/tlvermgeo http://www.geoproxy.geoportal-th.de/geoproxy/services?SERVICE=WFS&VERSION=1.1.0&REQUEST=DescribeFeatureType&OUTPUTFORMAT=text%2Fxml%3B+subtype%3Dgml%2F3.1.1&TYPENAME=tlvermgeo:gaz_alk_flur&NAMESPACE=xmlns(tlvermgeo=http%3A%2F%2Fwww.geoproxy.geoportal-th.de%2Ftlvermgeo)"
+                timeStamp="2016-01-21T12:04:08Z" numberOfFeatures="1">
+            <gml:boundedBy>
+                <gml:Envelope srsName="EPSG:25832">
+                    <gml:lowerCorner>679611.810 5637046.198</gml:lowerCorner>
+                    <gml:upperCorner>680887.841 5638125.940</gml:upperCorner>
+                </gml:Envelope>
+            </gml:boundedBy>
+            <gml:featureMember>
+                <tlvermgeo:gaz_alk_flur gml:id="ID_TLVERMGEO_GAZ_ALK_FLUR.163074008">
+                    <tlvermgeo:geographicIdentifier>163074008</tlvermgeo:geographicIdentifier>
+                    <tlvermgeo:geographicName>8</tlvermgeo:geographicName>
+                    <tlvermgeo:parentIdentifier>3074</tlvermgeo:parentIdentifier>
+                    <tlvermgeo:geographicExtent><!--Inlined geometry 'ID_TLVERMGEO_GAZ_ALK_FLUR.163074008_TLVERMGEO_GEOGRAPHICEXTENT'
+-->
+                        <gml:Polygon gml:id="ID_TLVERMGEO_GAZ_ALK_FLUR.163074008_TLVERMGEO_GEOGRAPHICEXTENT"
+                                     srsName="EPSG:25832">
+                            <gml:exterior>
+                                <gml:LinearRing srsName="EPSG:25832">
+                                    <gml:posList>679653.649 5637046.198 679611.810 5638075.786 680846.002 5638125.940
+                                        680887.841 5637096.345 679653.649 5637046.198
+                                    </gml:posList>
+                                </gml:LinearRing>
+                            </gml:exterior>
+                        </gml:Polygon>
+                    </tlvermgeo:geographicExtent>
+                </tlvermgeo:gaz_alk_flur>
+            </gml:featureMember>
+        </wfs:FeatureCollection>
+    </Respone>
+
+    <Request id="Leutra_8_1209">
+        <wfs:GetFeature version="1.1.0"
+                        xmlns:wfs="http://www.opengis.net/wfs"
+                        xmlns:gml="http://www.opengis.net/gml"
+                        xmlns:ogc="http://www.opengis.net/ogc"
+                        xmlns:tlvermgeo="http://www.geoproxy.geoportal-th.de/tlvermgeo"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://www.opengis.net/wfs  http://schemas.opengis.net/wfs/1.1.0/wfs.xsd"
+        >
+            <wfs:Query typeName="tlvermgeo:gaz_alk_flst">
+                <ogc:Filter>
+                    <ogc:And>
+
+                        <ogc:PropertyIsEqualTo>
+                            <ogc:PropertyName>tlvermgeo:parentIdentifier</ogc:PropertyName>
+                            <ogc:Literal>163074008</ogc:Literal>
+                        </ogc:PropertyIsEqualTo>
+
+                        <ogc:PropertyIsLike wildCard="%" singleChar="?" escape="/">
+                            <ogc:PropertyName>tlvermgeo:geographicName</ogc:PropertyName>
+                            <ogc:Literal>01209%</ogc:Literal>
+                        </ogc:PropertyIsLike>
+
+                    </ogc:And>
+                </ogc:Filter>
+            </wfs:Query>
+        </wfs:GetFeature>
+    </Request>
+    <Response>
+        <wfs:FeatureCollection
+                xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd http://www.geoproxy.geoportal-th.de/tlvermgeo http://www.geoproxy.geoportal-th.de/geoproxy/services?SERVICE=WFS&VERSION=1.1.0&REQUEST=DescribeFeatureType&OUTPUTFORMAT=text%2Fxml%3B+subtype%3Dgml%2F3.1.1&TYPENAME=tlvermgeo:gaz_alk_flst&NAMESPACE=xmlns(tlvermgeo=http%3A%2F%2Fwww.geoproxy.geoportal-th.de%2Ftlvermgeo)"
+                timeStamp="2016-01-21T10:22:49Z" numberOfFeatures="1">
+            <gml:boundedBy>
+                <gml:Envelope srsName="EPSG:25832">
+                    <gml:lowerCorner>680159.153 5637216.613</gml:lowerCorner>
+                    <gml:upperCorner>680159.153 5637216.613</gml:upperCorner>
+                </gml:Envelope>
+            </gml:boundedBy>
+            <gml:featureMember>
+                <tlvermgeo:gaz_alk_flst gml:id="ID_TLVERMGEO_GAZ_ALK_FLST.16307400801209">
+                    <tlvermgeo:geographicIdentifier>16307400801209</tlvermgeo:geographicIdentifier>
+                    <tlvermgeo:geographicName>01209/0000</tlvermgeo:geographicName>
+                    <tlvermgeo:parentIdentifier>163074008</tlvermgeo:parentIdentifier>
+                    <tlvermgeo:geographicExtent>
+                        <!--Inlined geometry 'ID_TLVERMGEO_GAZ_ALK_FLST.16307400801209_TLVERMGEO_GEOGRAPHICEXTENT'-->
+                        <gml:Point gml:id="ID_TLVERMGEO_GAZ_ALK_FLST.16307400801209_TLVERMGEO_GEOGRAPHICEXTENT"
+                                   srsName="EPSG:25832">
+                            <gml:pos>680159.153 5637216.613</gml:pos>
+                        </gml:Point>
+                    </tlvermgeo:geographicExtent>
+                </tlvermgeo:gaz_alk_flst>
+            </gml:featureMember>
+        </wfs:FeatureCollection>
+    </Response>
+</Flurstueck>
