@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="LIS GPSCreator" version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>LISGpsCreator</name>
+    <link href="http://lis.firebaseapp.com/app">
+      <text>$header</text>
+    </link>
+  </metadata>
+#foreach ( $wf in $wfs )
+  <rte>
+    <name>$wf.gem $wf.fl $wf.fs $wf.desc</name>
+#foreach ( $c in $wf.coords )
+    <rtept lat="$c.lat" lon="$c.lon">
+      <ele>0.0000000</ele>
+    </rtept>
+#end
+  </rte>
+#end
+</gpx>
+

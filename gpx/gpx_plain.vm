@@ -1,0 +1,8 @@
+Grundstücke:  $name
+
+#foreach ( $wf in $wfs )
+    $wf.gem -  $wf.fl $wf.fs $wf.desc
+    #foreach ( $c in $wf.coords )
+        $c
+    #end
+#end
