@@ -28,12 +28,12 @@ public class GpxCreator {
             Map wf = new HashMap();
             wf.put("gem", "Leutra");
             wf.put("fl", record.get("Flurkarte"));
-            wf.put("fs", record.get("Flurstück"));
+            wf.put("fs", record.get("Flurstueck"));
             wf.put("desc", record.get("Bezeichnung"));
             List coords = new ArrayList();
             String latlons[] = record.get("latlon").split(", *");
-            Map ll = new HashMap();
             for ( String latlon:latlons ) {
+                Map ll = new HashMap();
                 if ( latlon.isEmpty() ) continue;
                 String tmp[] = latlon.split(" ");
                 ll.put("lon", tmp[0]);
@@ -75,7 +75,7 @@ public class GpxCreator {
         Template t = ve.getTemplate( velocityTemplate );
         /*  create a context and add data */
         VelocityContext context = new VelocityContext();
-        context.put("header", "Wald // Gemarkung Leutra // Heinz Letsch");
+        context.put("header", "Wald -- Gemarkung Leutra -- Heinz Letsch");
         context.put("wfs", gpxCreator.createGrundStuecke(inputSource));
         /* now render the template into a StringWriter */
         StringWriter writer = new StringWriter();
