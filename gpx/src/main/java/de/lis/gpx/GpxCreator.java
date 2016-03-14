@@ -20,27 +20,42 @@ public class GpxCreator {
     private List wfs = new ArrayList();
 
 
-    private void readCsv() throws IOException {
-        Reader in = new FileReader("Grundstuecke.csv");
+    private void readCsv(String filename) throws IOException {
+        Reader in = new FileReader(filename);
         Iterable<CSVRecord> records = CSVFormat.newFormat(';').withHeader().parse(in);
 
         for (CSVRecord record:records) {
             Map wf = new HashMap();
-            wf.put("gem", "Leutra");
+            wf.put("gem", record.get("Gemarkung"));
             wf.put("fl", record.get("Flurkarte"));
             wf.put("fs", record.get("Flurstück"));
             wf.put("desc", record.get("Bezeichnung"));
+            String latlonStr = record.get("latlon");
+            if ( latlonStr.isEmpty() ) {
+                String utm = record.get("utm32");
+                if ( utm.isEmpty() ) continue;
+                latlonStr = utm2latlon(utm);
+            }
+            if ( latlonStr.isEmpty() ) continue;
+
             List coords = new ArrayList();
-            String latlons[] = record.get("latlon").split(", *");
-            Map ll = new HashMap();
+            String latlons[] = latlonStr.split(", *");
             for ( String latlon:latlons ) {
+                Map ll = new HashMap();
                 if ( latlon.isEmpty() ) continue;
                 String tmp[] = latlon.split(" ");
                 ll.put("lon", tmp[0]);
                 ll.put("lat", tmp[1]);
                 coords.add(ll);
             }
-            if ( coords.size() == 0 ) continue;
+            int size = coords.size();
+            if ( size == 0 ) continue;
+            Map lastCoords = (Map) coords.get(size-1);
+            Map firstCoords = (Map) coords.get(0);
+            if ( !(lastCoords.get("lat").equals(firstCoords.get("lat")) && lastCoords.get("lon").equals(firstCoords.get("lon"))) ) {
+                coords.add(firstCoords);
+            }
+
             wf.put("coords",coords);
             wfs.add(wf);
         }
@@ -48,10 +63,23 @@ public class GpxCreator {
 
     public List createGrundStuecke ( String inputSource ) throws IOException {
 
-        readCsv();
+        readCsv(inputSource);
 
         return wfs;
     }
+
+    String utm2latlon(String utm) {
+        String latlon="";
+        String utms[] = utm.split(", *");
+        CoordinateConversion cc = new CoordinateConversion();
+        for ( String u:utms ) {
+            String tmp = "32 N " + u;
+            double ll[] = cc.utm2LatLon(tmp);
+            latlon += String.format("%s %s, ", ll[1], ll[0]);
+        }
+        return latlon;
+    }
+
 
     public static void main( String[] args )
             throws Exception
@@ -61,7 +89,7 @@ public class GpxCreator {
         ve.init();
         /*  next, get the Template  */
         String velocityTemplate = "gpx_rte.vm";
-        String inputSource = "test";
+        String inputSource = "Grundstuecke.csv";
 
         if ( args.length > 0 ) {
             velocityTemplate = args[0];
@@ -75,13 +103,13 @@ public class GpxCreator {
         Template t = ve.getTemplate( velocityTemplate );
         /*  create a context and add data */
         VelocityContext context = new VelocityContext();
-        context.put("header", "Wald // Gemarkung Leutra // Heinz Letsch");
+        context.put("header", "Wald // Gemarkung Leutra/Maua // Kay Schmidt");
         context.put("wfs", gpxCreator.createGrundStuecke(inputSource));
         /* now render the template into a StringWriter */
         StringWriter writer = new StringWriter();
         t.merge( context, writer );
         /* show the World */
-        System.out.println( writer.toString() );
+        System.out.println( writer.toString().replace("ä","ae").replace("Ä","Ae").replace("ü","ue").replace("Ü","ü").replace("ö","oe").replace("Ö","Oe") );
     }
 
 }
