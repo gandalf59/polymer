@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpsies="http://www.gpsies.com/GPX/1/0" creator="GPSies http://www.gpsies.com - Wanderung 805" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+    <metadata>
+        <name>$header</name>
+        <desc>$header</desc>
+        <author>
+            <name>WanderBlog</name>
+            <link href="http://www.gpsies.com/mapUser.do?username=WanderBlog">
+            <text>WanderBlog on GPSies.com</text>
+            <type>GPSiesUserOnWeb</type>
+            </link>
+        </author>
+        <link href="http://www.gpsies.com/map.do?fileId=gjlpfzruafgjsrkz">
+        <text>$header</text>
+        <type>trackOnWeb</type>
+        </link>
+        <time>2016-02-28T16:10:03Z</time>
+        <extensions>
+        </extensions>
+    </metadata>
+    <trk>
+        <name>$header</name>
+        <link href="http://www.gpsies.com/map.do?fileId=gjlpfzruafgjsrkz">
+        <type>trackOnWeb</type>
+        </link>
+        <link href="http://www.gpsies.com/charts/gj/map/gjlpfzruafgjsrkz_map.png">
+        <type>elevationChartUrlMap</type>
+        </link>
+        <link href="http://www.gpsies.com/charts/gj/mapThumb/gjlpfzruafgjsrkz_mapThumb.png">
+        <type>elevationChartUrlMapThumb</type>
+        </link>
+        <link href="http://www.gpsies.com/charts/gj/tab/gjlpfzruafgjsrkz_tab.png">
+        <type>elevationChartUrlTab</type>
+        </link>
+#foreach ( $wf in $wfs )
+      <trkseg>
+        <name>${wf.fl}_${wf.fs}</name>
+        <desc>
+            $wf.gem $wf.fl $wf.fs $wf.desc
+        </desc>
+#foreach ( $c in $wf.coords )
+        <trkpt lat="$c.lat" lon="$c.lon">
+            <ele>86.175292</ele>
+            <time>2010-01-01T00:00:00Z</time>
+        </trkpt>
+#end
+      </trkseg>
+#end
+    </trk>
+</gpx>
+

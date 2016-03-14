@@ -28,7 +28,7 @@ public class GpxCreator {
             Map wf = new HashMap();
             wf.put("gem", record.get("Gemarkung"));
             wf.put("fl", record.get("Flurkarte"));
-            wf.put("fs", record.get("Flurstück"));
+            wf.put("fs", record.get("Flurstueck"));
             wf.put("desc", record.get("Bezeichnung"));
             String latlonStr = record.get("latlon");
             if ( latlonStr.isEmpty() ) {
@@ -39,7 +39,7 @@ public class GpxCreator {
             if ( latlonStr.isEmpty() ) continue;
 
             List coords = new ArrayList();
-            String latlons[] = latlonStr.split(", *");
+            String latlons[] = record.get("latlon").split(", *");
             for ( String latlon:latlons ) {
                 Map ll = new HashMap();
                 if ( latlon.isEmpty() ) continue;

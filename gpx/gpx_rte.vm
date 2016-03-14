@@ -9,7 +9,8 @@
   </metadata>
 #foreach ( $wf in $wfs )
   <rte>
-    <name>$wf.gem $wf.fl $wf.fs $wf.desc</name>
+    <name>${wf.gem}_${wf.fl}_${wf.fs}</name>
+    <desc> $wf.desc</desc>
 #foreach ( $c in $wf.coords )
     <rtept lat="$c.lat" lon="$c.lon">
       <ele>0.0000000</ele>
