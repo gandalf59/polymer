@@ -39,7 +39,7 @@ public class GpxCreator {
             if ( latlonStr.isEmpty() ) continue;
 
             List coords = new ArrayList();
-            String latlons[] = record.get("latlon").split(", *");
+            String latlons[] = latlonStr.split(", *");
             for ( String latlon:latlons ) {
                 Map ll = new HashMap();
                 if ( latlon.isEmpty() ) continue;
@@ -109,7 +109,7 @@ public class GpxCreator {
         StringWriter writer = new StringWriter();
         t.merge( context, writer );
         /* show the World */
-        System.out.println( writer.toString().replace("ä","ae").replace("Ä","Ae").replace("ü","ue").replace("Ü","ü").replace("ö","oe").replace("Ö","Oe") );
+        System.out.println( writer.toString().replace("ä","ae").replace("Ä","Ae").replace("ü","ue").replace("Ü","Ue").replace("ö","oe").replace("Ö","Oe") );
     }
 
 }
