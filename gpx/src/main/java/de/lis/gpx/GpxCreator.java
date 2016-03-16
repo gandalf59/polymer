@@ -2,10 +2,7 @@ package de.lis.gpx;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -97,19 +94,27 @@ public class GpxCreator {
         if ( args.length > 1 ) {
             inputSource = args[1];
         }
-
+        String outputSource = null;
         GpxCreator gpxCreator = new GpxCreator();
+        if ( args.length > 2 ) {
+            outputSource = args[2];
+        }
 
         Template t = ve.getTemplate( velocityTemplate );
         /*  create a context and add data */
         VelocityContext context = new VelocityContext();
-        context.put("header", "Wald // Gemarkung Leutra/Maua // Kay Schmidt");
+        context.put("header", System.getProperty("header") );
         context.put("wfs", gpxCreator.createGrundStuecke(inputSource));
-        /* now render the template into a StringWriter */
+
         StringWriter writer = new StringWriter();
         t.merge( context, writer );
-        /* show the World */
-        System.out.println( writer.toString().replace("ä","ae").replace("Ä","Ae").replace("ü","ue").replace("Ü","Ue").replace("ö","oe").replace("Ö","Oe") );
+        String content = writer.toString().replace("ä", "ae").replace("Ä", "Ae").replace("ü", "ue").replace("Ü", "Ue").replace("ö", "oe").replace("Ö", "Oe");
+        if ( outputSource == null ) {
+            System.out.println(content);
+        } else {
+            FileWriter fileWriter = new FileWriter(outputSource);
+            fileWriter.write(content);
+        }
     }
 
 }

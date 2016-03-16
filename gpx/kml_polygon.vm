@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>$header</name>
+        <Style id="transBluePoly">
+            <LineStyle>
+                <width>1.5</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>7dff0000</color>
+            </PolyStyle>
+        </Style>
+#foreach ( $wf in $wfs )
+        <Placemark>
+            <name>${wf.gem}_${wf.fl}_${wf.fs}</name>
+            <description>${wf.desc}</description>
+            <author>D. Letsch</author>
+            <MultiGeometry>
+                <Polygon>
+                    <name>${wf.fl}_${wf.fs}</name>
+                    <description>${wf.desc}</description>
+                    <extrude>1</extrude>
+                    <altitudeMode>relativeToGround</altitudeMode>
+                    <outerBoundaryIs>
+                        <LinearRing>
+                            <coordinates>
+#foreach ( $c in $wf.coords )
+                                $c.lon, $c.lat
+#end
+                            </coordinates>
+                        </LinearRing>
+                    </outerBoundaryIs>
+                </Polygon>
+            </MultiGeometry>
+        </Placemark>
+#end
+    </Document>
+</kml>
