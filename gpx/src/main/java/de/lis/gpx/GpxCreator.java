@@ -1,14 +1,18 @@
 package de.lis.gpx;
 
-import java.io.*;
-import java.lang.reflect.Array;
-import java.util.*;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.log.SystemLogChute;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+
+import java.io.*;
+import java.net.URL;
+import java.util.*;
+
 /**
  * Created by dletsch on 01.03.16.
  */
@@ -82,10 +86,8 @@ public class GpxCreator {
             throws Exception
     {
         /*  first, get and initialize an engine  */
-        VelocityEngine ve = new VelocityEngine();
-        ve.init();
         /*  next, get the Template  */
-        String velocityTemplate = "gpx_rte.vm";
+        String velocityTemplate = "WEB-INF/gpx_rte.vm";
         String inputSource = "Grundstuecke.csv";
 
         if ( args.length > 0 ) {
@@ -100,13 +102,24 @@ public class GpxCreator {
             outputSource = args[2];
         }
 
+        gpxCreator.createGpx(inputSource,outputSource);
+
+    }
+
+    public void createGpx ( String inputSource, String outputSource ) throws IOException {
+        String velocityTemplate = "gpx_rte.vm";
+        VelocityEngine ve = new VelocityEngine();
+        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        ve.setProperty("classpath.resource.loader.class",ClasspathResourceLoader.class.getName());
+        ve.init();
+
         Template t = ve.getTemplate( velocityTemplate );
         /*  create a context and add data */
         VelocityContext context = new VelocityContext();
         context.put("header", System.getProperty("header") );
-        context.put("wfs", gpxCreator.createGrundStuecke(inputSource));
+        context.put("wfs", createGrundStuecke(inputSource));
 
-        StringWriter writer = new StringWriter();
+        StringWriter writer = new StringWriter(100000);
         t.merge( context, writer );
         String content = writer.toString().replace("ä", "ae").replace("Ä", "Ae").replace("ü", "ue").replace("Ü", "Ue").replace("ö", "oe").replace("Ö", "Oe");
         if ( outputSource == null ) {
@@ -115,6 +128,7 @@ public class GpxCreator {
             FileWriter fileWriter = new FileWriter(outputSource);
             fileWriter.write(content);
         }
+
     }
 
 }

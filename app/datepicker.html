@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Reservierung</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="node_modules/ng-datepicker/src/css/ngDatepicker.css">
+</head>
+<body ng-controller="Ctrl as ctrl">
+
+
+<div>
+    <h3>Reseservierungsanfrage</h3>
+    <h4>Eingabe</h4>
+    <label>Name</label><br/>
+    <input type="text" name="name" ng-model="ctrl.name"/><br/>
+    <label>Anreise</label>
+    <ng-datepicker ng-model="ctrl.anreise" locale="de" format="DD.MM.YYYY" view-format="Do MMMM YYYY"></ng-datepicker>
+    <label>Abreise</label>
+    <ng-datepicker ng-model="ctrl.abreise" locale="de" format="DD.MM.YYYY" view-format="Do MMMM YYYY"></ng-datepicker>
+    <label>Telefonnummer oder E-Mail</label><br/>
+    <input type="text" name="name" ng-model="ctrl.email"/>
+    <h4>Info</h4>
+    <span>{{ctrl.name}} reist an am {{ctrl.anreise}} und ab am {{ctrl.abreise}} ({{ctrl.tage()}} Tage). Erreichbar unter: {{ctrl.email}}</span>
+</div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="node_modules/ng-datepicker/src/js/ngDatepicker.min.js"></script>
+<script type="text/javascript">
+    var app = angular.module('app', ['jkuri.datepicker']);
+    app.controller('Ctrl', [function() {
+        var self = this;
+
+        this.anreise = new Date();
+        this.abreise = new Date();
+
+        this.tage = function() {
+            return new Date(this.abreise) - new Date(this.anreise);
+        }
+    }]);
+</script>
+</body>
+</html>
